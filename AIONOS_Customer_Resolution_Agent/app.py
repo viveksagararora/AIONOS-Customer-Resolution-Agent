@@ -137,6 +137,4 @@ if st.button(
 # --------------------------------------------------
 st.markdown("---")
 
-st.caption(
-    "Built for AIONOS Agentic AI Factory Assignment | Customer Resolution Agent"
-)
+
