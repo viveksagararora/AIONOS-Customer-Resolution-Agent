@@ -36,11 +36,11 @@ This agent helps resolve:
 - Compensation eligibility
 - Escalation scenarios
 
-Built using only the provided customer data and airline policies.
+Built using only the customer data and airline policies provided in the assignment.
 """)
 
 # --------------------------------------------------
-# CUSTOMER SELECTOR
+# CUSTOMER SELECTION
 # --------------------------------------------------
 customer_name = st.selectbox(
     "Select Customer",
@@ -66,7 +66,7 @@ with st.sidebar:
     st.header("Customer Profile")
 
     st.write(f"**Name:** {customer_name}")
-    st.write(f"**Tier:** {customer['tier']}")
+    st.write(f"**Loyalty Tier:** {customer['tier']}")
     st.write(f"**PNR:** {customer['pnr']}")
     st.write(f"**Flight:** {customer['flight']}")
     st.write(f"**Status:** {customer['status']}")
@@ -128,13 +128,27 @@ if st.button(
 
         st.markdown("---")
 
-        st.subheader("📋 Decision Audit Trail")
+        st.subheader("📋 Rules Applied")
 
-        st.json(decision)
+        if "rules_applied" in decision:
+
+            for rule in decision["rules_applied"]:
+                st.write(f"✅ {rule}")
+
+        if decision["escalate"]:
+
+            st.error(
+                f"Escalation Required: {decision['escalation_reason']}"
+            )
+
+        else:
+
+            st.success(
+                "No escalation required."
+            )
 
 # --------------------------------------------------
 # FOOTER
 # --------------------------------------------------
 st.markdown("---")
-
-
+)
