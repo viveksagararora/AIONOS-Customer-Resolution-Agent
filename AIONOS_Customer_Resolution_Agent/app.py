@@ -28,6 +28,7 @@ st.markdown("""
 ### Airline Disruption Support System
 
 This agent helps resolve:
+
 - Flight cancellations
 - Flight delays
 - Refund requests
@@ -35,7 +36,7 @@ This agent helps resolve:
 - Compensation eligibility
 - Escalation scenarios
 
-Built using only the provided policy and customer data.
+Built using only the provided customer data and airline policies.
 """)
 
 # --------------------------------------------------
@@ -46,10 +47,14 @@ customer_name = st.selectbox(
     list(CUSTOMERS.keys())
 )
 
-# Clear query when switching customers
+# Clear query when customer changes
 if st.session_state.selected_customer != customer_name:
     st.session_state.selected_customer = customer_name
-    st.session_state[f"query_{customer_name}"] = ""
+
+    query_key = f"query_{customer_name}"
+
+    if query_key not in st.session_state:
+        st.session_state[query_key] = ""
 
 customer = CUSTOMERS[customer_name]
 
@@ -88,9 +93,12 @@ query = st.text_area(
 )
 
 # --------------------------------------------------
-# BUTTON
+# GENERATE BUTTON
 # --------------------------------------------------
-if st.button("Generate Resolution", type="primary"):
+if st.button(
+    "Generate Resolution",
+    type="primary"
+):
 
     if not query.strip():
 
@@ -111,17 +119,24 @@ if st.button("Generate Resolution", type="primary"):
             decision
         )
 
-        st.subheader("Resolution")
+        st.markdown("---")
 
-        st.text_area(
-            label="Generated Response",
-            value=response,
-            height=350,
-            disabled=True
-        )
+        st.subheader("🤖 Agent Resolution")
+
+        with st.container(border=True):
+            st.markdown(response)
+
+        st.markdown("---")
+
+        st.subheader("📋 Decision Audit Trail")
+
+        st.json(decision)
 
 # --------------------------------------------------
 # FOOTER
 # --------------------------------------------------
 st.markdown("---")
 
+st.caption(
+    "Built for AIONOS Agentic AI Factory Assignment | Customer Resolution Agent"
+)
