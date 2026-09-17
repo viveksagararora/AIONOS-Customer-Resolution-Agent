@@ -36,7 +36,6 @@ This agent helps resolve:
 - Compensation eligibility
 - Escalation scenarios
 
-Built using only the customer data and airline policies provided in the assignment.
 """)
 
 # --------------------------------------------------
